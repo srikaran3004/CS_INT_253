@@ -129,3 +129,46 @@ def api_form(request):
     </form>
     """)
 
+def add_form(request):
+    """Display form for addition"""
+    return HttpResponse("""
+    <h1>Addition Calculator</h1>
+    <form>
+        <label>Value 1:</label>
+        <input type="number" id="value1" placeholder="Enter first number" required><br><br>
+        
+        <label>Value 2:</label>
+        <input type="number" id="value2" placeholder="Enter second number" required><br><br>
+        
+        <button type="button" onclick="calculate()">Add Numbers</button>
+    </form>
+    
+    <script>
+        function calculate() {
+            var val1 = document.getElementById('value1').value;
+            var val2 = document.getElementById('value2').value;
+            window.location.href = '/add/?value1=' + val1 + '&value2=' + val2;
+        }
+    </script>
+    """)
+
+def add_numbers(request):
+    """Perform addition using query parameters"""
+    value1 = request.GET.get('value1', 0)
+    value2 = request.GET.get('value2', 0)
+    
+    try:
+        num1 = int(value1)
+        num2 = int(value2)
+        result = num1 + num2
+        
+        return HttpResponse(f"""
+        <h1>Addition Result</h1>
+        <p><strong>Value 1:</strong> {num1}</p>
+        <p><strong>Value 2:</strong> {num2}</p>
+        <p><strong>Result:</strong> {num1} + {num2} = {result}</p>
+        <a href="/addform/">Calculate Again</a>
+        """)
+    except:
+        return HttpResponse("<h1>Error: Please enter valid numbers</h1>")
+

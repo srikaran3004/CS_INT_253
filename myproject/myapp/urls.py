@@ -10,5 +10,7 @@ urlpatterns = [
     path('dish/<str:item>/',views.menuDisplay,name='menuDetails'), #using query params
     path('dishDetails/<str:item_name>/', views.menu, name='menu'), #using if esle
     path('form/', views.api_form, name='api_form'),
-    path('fetch/<int:id>/',views.fetch_data,name='fetch_data')
+    path('fetch/<int:id>/',views.fetch_data,name='fetch_data'),
+    path('addform/', views.add_form, name='add_form'),
+    path('add/', views.add_numbers, name='add_numbers'),
 ]
