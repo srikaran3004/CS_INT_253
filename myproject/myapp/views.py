@@ -172,3 +172,27 @@ def add_numbers(request):
     except:
         return HttpResponse("<h1>Error: Please enter valid numbers</h1>")
 
+def lpu_info(request, year, month):
+    """Handle LPU URL pattern like /lpu/2025/08"""
+    return HttpResponse(f"""
+    <h1>LPU Information</h1>
+    <p><strong>Year:</strong> {year}</p>
+    <p><strong>Month:</strong> {month}</p>
+    <p><strong>URL Pattern:</strong> /lpu/{year}/{month}</p>
+    <hr>
+    <h3>Details:</h3>
+    <ul>
+        <li>Academic Year: {year}</li>
+        <li>Month: {month}</li>
+        <li>University: LPU (Lovely Professional University)</li>
+    </ul>
+    <a href="/">Back to Home</a>
+    """)
+
+def recipe(request):
+    food = request.GET.get('food', '')
+    if food:
+        return HttpResponse(f"The food item is {food}")
+    else:
+        return HttpResponse("<h1 style='color:red'>Food not found</h1>")
+
