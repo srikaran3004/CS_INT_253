@@ -1,0 +1,652 @@
+{% extends 'base.html' %}
+
+{% block title %}Placement Drives - LPU Placement Portal{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .company-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+        border-left: 5px solid var(--primary-color);
+    }
+
+    .company-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .company-logo {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-right: 1rem;
+    }
+
+    .company-name {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .company-details {
+        color: #6b7280;
+        font-size: 0.9rem;
+    }
+
+    .package-badge {
+        background: linear-gradient(135deg, var(--success-color), #34d399);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    .eligibility-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+    }
+
+    .eligibility-badge {
+        background: linear-gradient(135deg, var(--accent-color), #fbbf24);
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .register-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 0.8rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+    }
+
+    .register-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        color: white;
+    }
+
+    .register-btn:disabled {
+        background: #9ca3af;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .status-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .status-active {
+        background: linear-gradient(135deg, var(--success-color), #34d399);
+        color: white;
+    }
+
+    .status-upcoming {
+        background: linear-gradient(135deg, var(--accent-color), #fbbf24);
+        color: white;
+    }
+
+    .status-closed {
+        background: linear-gradient(135deg, #ef4444, #f87171);
+        color: white;
+    }
+
+    .filters-section {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .filter-btn {
+        background: #f3f4f6;
+        border: 2px solid #e5e7eb;
+        border-radius: 20px;
+        padding: 0.5rem 1.5rem;
+        margin: 0.25rem;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .filter-btn.active {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    .filter-btn:hover {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+
+    .custom-toast {
+        background: white;
+        border-radius: 15px;
+        padding: 1rem 1.5rem;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        margin-bottom: 1rem;
+        border-left: 5px solid var(--success-color);
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-item {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+        .company-card {
+            padding: 1rem;
+        }
+        
+        .company-name {
+            font-size: 1.1rem;
+        }
+        
+        .register-btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <h1><i class="fas fa-building me-2"></i>Placement Drives</h1>
+    <p>Explore opportunities with top companies and register for placement drives</p>
+</div>
+
+<!-- Statistics Row -->
+<div class="stats-row">
+    <div class="stat-item">
+        <div class="stat-number">25</div>
+        <div class="stat-label">Active Drives</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">15</div>
+        <div class="stat-label">Companies Visited</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">₹12.5L</div>
+        <div class="stat-label">Highest Package</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">85%</div>
+        <div class="stat-label">Placement Rate</div>
+    </div>
+</div>
+
+<!-- Filters Section -->
+<div class="filters-section">
+    <h5 class="mb-3"><i class="fas fa-filter me-2"></i>Filter Companies</h5>
+    <button class="filter-btn active" data-filter="all">All Companies</button>
+    <button class="filter-btn" data-filter="tech">Technology</button>
+    <button class="filter-btn" data-filter="consulting">Consulting</button>
+    <button class="filter-btn" data-filter="finance">Finance</button>
+    <button class="filter-btn" data-filter="ecommerce">E-commerce</button>
+    <button class="filter-btn" data-filter="product">Product</button>
+</div>
+
+<!-- Companies List -->
+<div class="row">
+    <!-- Google -->
+    <div class="col-lg-6 col-md-12 company-card" data-category="tech">
+        <div class="d-flex align-items-start">
+            <img src="https://via.placeholder.com/60x60/4285f4/ffffff?text=G" alt="Google" class="company-logo">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="company-name">Google</div>
+                        <div class="company-details">
+                            <i class="fas fa-map-marker-alt me-1"></i>Bangalore, Hyderabad<br>
+                            <i class="fas fa-calendar me-1"></i>Drive Date: 15th March 2024
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">Active</span>
+                </div>
+                <div class="package-badge">₹25 LPA - ₹45 LPA</div>
+                <div class="eligibility-badges">
+                    <span class="eligibility-badge">B.Tech CSE</span>
+                    <span class="eligibility-badge">B.Tech IT</span>
+                    <span class="eligibility-badge">MCA</span>
+                </div>
+                <button class="register-btn" onclick="registerCompany('Google')">
+                    <i class="fas fa-user-plus me-2"></i>Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Microsoft -->
+    <div class="col-lg-6 col-md-12 company-card" data-category="tech">
+        <div class="d-flex align-items-start">
+            <img src="https://via.placeholder.com/60x60/00a4ef/ffffff?text=M" alt="Microsoft" class="company-logo">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="company-name">Microsoft</div>
+                        <div class="company-details">
+                            <i class="fas fa-map-marker-alt me-1"></i>Hyderabad, Noida<br>
+                            <i class="fas fa-calendar me-1"></i>Drive Date: 20th March 2024
+                        </div>
+                    </div>
+                    <span class="status-badge status-upcoming">Upcoming</span>
+                </div>
+                <div class="package-badge">₹18 LPA - ₹35 LPA</div>
+                <div class="eligibility-badges">
+                    <span class="eligibility-badge">B.Tech CSE</span>
+                    <span class="eligibility-badge">B.Tech IT</span>
+                    <span class="eligibility-badge">B.Tech ECE</span>
+                </div>
+                <button class="register-btn" onclick="registerCompany('Microsoft')">
+                    <i class="fas fa-user-plus me-2"></i>Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Amazon -->
+    <div class="col-lg-6 col-md-12 company-card" data-category="ecommerce">
+        <div class="d-flex align-items-start">
+            <img src="https://via.placeholder.com/60x60/ff9900/ffffff?text=A" alt="Amazon" class="company-logo">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="company-name">Amazon</div>
+                        <div class="company-details">
+                            <i class="fas fa-map-marker-alt me-1"></i>Bangalore, Chennai<br>
+                            <i class="fas fa-calendar me-1"></i>Drive Date: 25th March 2024
+                        </div>
+                    </div>
+                    <span class="status-badge status-upcoming">Upcoming</span>
+                </div>
+                <div class="package-badge">₹20 LPA - ₹40 LPA</div>
+                <div class="eligibility-badges">
+                    <span class="eligibility-badge">B.Tech CSE</span>
+                    <span class="eligibility-badge">B.Tech IT</span>
+                    <span class="eligibility-badge">B.Tech ECE</span>
+                    <span class="eligibility-badge">MCA</span>
+                </div>
+                <button class="register-btn" onclick="registerCompany('Amazon')">
+                    <i class="fas fa-user-plus me-2"></i>Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TCS -->
+    <div class="col-lg-6 col-md-12 company-card" data-category="consulting">
+        <div class="d-flex align-items-start">
+            <img src="https://via.placeholder.com/60x60/0066cc/ffffff?text=T" alt="TCS" class="company-logo">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="company-name">Tata Consultancy Services</div>
+                        <div class="company-details">
+                            <i class="fas fa-map-marker-alt me-1"></i>Multiple Locations<br>
+                            <i class="fas fa-calendar me-1"></i>Drive Date: 10th March 2024
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">Active</span>
+                </div>
+                <div class="package-badge">₹7 LPA - ₹12 LPA</div>
+                <div class="eligibility-badges">
+                    <span class="eligibility-badge">B.Tech All</span>
+                    <span class="eligibility-badge">BCA</span>
+                    <span class="eligibility-badge">MCA</span>
+                    <span class="eligibility-badge">BBA</span>
+                    <span class="eligibility-badge">MBA</span>
+                </div>
+                <button class="register-btn" onclick="registerCompany('TCS')">
+                    <i class="fas fa-user-plus me-2"></i>Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Infosys -->
+    <div class="col-lg-6 col-md-12 company-card" data-category="consulting">
+        <div class="d-flex align-items-start">
+            <img src="https://via.placeholder.com/60x60/0066cc/ffffff?text=I" alt="Infosys" class="company-logo">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="company-name">Infosys</div>
+                        <div class="company-details">
+                            <i class="fas fa-map-marker-alt me-1"></i>Bangalore, Pune<br>
+                            <i class="fas fa-calendar me-1"></i>Drive Date: 12th March 2024
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">Active</span>
+                </div>
+                <div class="package-badge">₹6.5 LPA - ₹11 LPA</div>
+                <div class="eligibility-badges">
+                    <span class="eligibility-badge">B.Tech All</span>
+                    <span class="eligibility-badge">BCA</span>
+                    <span class="eligibility-badge">MCA</span>
+                    <span class="eligibility-badge">BBA</span>
+                </div>
+                <button class="register-btn" onclick="registerCompany('Infosys')">
+                    <i class="fas fa-user-plus me-2"></i>Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wipro -->
+    <div class="col-lg-6 col-md-12 company-card" data-category="consulting">
+        <div class="d-flex align-items-start">
+            <img src="https://via.placeholder.com/60x60/0066cc/ffffff?text=W" alt="Wipro" class="company-logo">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="company-name">Wipro</div>
+                        <div class="company-details">
+                            <i class="fas fa-map-marker-alt me-1"></i>Bangalore, Chennai<br>
+                            <i class="fas fa-calendar me-1"></i>Drive Date: 18th March 2024
+                        </div>
+                    </div>
+                    <span class="status-badge status-upcoming">Upcoming</span>
+                </div>
+                <div class="package-badge">₹6 LPA - ₹10 LPA</div>
+                <div class="eligibility-badges">
+                    <span class="eligibility-badge">B.Tech All</span>
+                    <span class="eligibility-badge">BCA</span>
+                    <span class="eligibility-badge">MCA</span>
+                </div>
+                <button class="register-btn" onclick="registerCompany('Wipro')">
+                    <i class="fas fa-user-plus me-2"></i>Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HCL -->
+    <div class="col-lg-6 col-md-12 company-card" data-category="tech">
+        <div class="d-flex align-items-start">
+            <img src="https://via.placeholder.com/60x60/0066cc/ffffff?text=H" alt="HCL" class="company-logo">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="company-name">HCL Technologies</div>
+                        <div class="company-details">
+                            <i class="fas fa-map-marker-alt me-1"></i>Noida, Chennai<br>
+                            <i class="fas fa-calendar me-1"></i>Drive Date: 22nd March 2024
+                        </div>
+                    </div>
+                    <span class="status-badge status-upcoming">Upcoming</span>
+                </div>
+                <div class="package-badge">₹5.5 LPA - ₹9 LPA</div>
+                <div class="eligibility-badges">
+                    <span class="eligibility-badge">B.Tech All</span>
+                    <span class="eligibility-badge">BCA</span>
+                    <span class="eligibility-badge">MCA</span>
+                </div>
+                <button class="register-btn" onclick="registerCompany('HCL')">
+                    <i class="fas fa-user-plus me-2"></i>Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cognizant -->
+    <div class="col-lg-6 col-md-12 company-card" data-category="consulting">
+        <div class="d-flex align-items-start">
+            <img src="https://via.placeholder.com/60x60/0066cc/ffffff?text=C" alt="Cognizant" class="company-logo">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="company-name">Cognizant</div>
+                        <div class="company-details">
+                            <i class="fas fa-map-marker-alt me-1"></i>Chennai, Bangalore<br>
+                            <i class="fas fa-calendar me-1"></i>Drive Date: 28th March 2024
+                        </div>
+                    </div>
+                    <span class="status-badge status-upcoming">Upcoming</span>
+                </div>
+                <div class="package-badge">₹6 LPA - ₹10.5 LPA</div>
+                <div class="eligibility-badges">
+                    <span class="eligibility-badge">B.Tech All</span>
+                    <span class="eligibility-badge">BCA</span>
+                    <span class="eligibility-badge">MCA</span>
+                    <span class="eligibility-badge">BBA</span>
+                </div>
+                <button class="register-btn" onclick="registerCompany('Cognizant')">
+                    <i class="fas fa-user-plus me-2"></i>Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accenture -->
+    <div class="col-lg-6 col-md-12 company-card" data-category="consulting">
+        <div class="d-flex align-items-start">
+            <img src="https://via.placeholder.com/60x60/0066cc/ffffff?text=A" alt="Accenture" class="company-logo">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="company-name">Accenture</div>
+                        <div class="company-details">
+                            <i class="fas fa-map-marker-alt me-1"></i>Bangalore, Mumbai<br>
+                            <i class="fas fa-calendar me-1"></i>Drive Date: 30th March 2024
+                        </div>
+                    </div>
+                    <span class="status-badge status-upcoming">Upcoming</span>
+                </div>
+                <div class="package-badge">₹7 LPA - ₹12 LPA</div>
+                <div class="eligibility-badges">
+                    <span class="eligibility-badge">B.Tech All</span>
+                    <span class="eligibility-badge">BCA</span>
+                    <span class="eligibility-badge">MCA</span>
+                    <span class="eligibility-badge">BBA</span>
+                    <span class="eligibility-badge">MBA</span>
+                </div>
+                <button class="register-btn" onclick="registerCompany('Accenture')">
+                    <i class="fas fa-user-plus me-2"></i>Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- IBM -->
+    <div class="col-lg-6 col-md-12 company-card" data-category="tech">
+        <div class="d-flex align-items-start">
+            <img src="https://via.placeholder.com/60x60/0066cc/ffffff?text=I" alt="IBM" class="company-logo">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="company-name">IBM</div>
+                        <div class="company-details">
+                            <i class="fas fa-map-marker-alt me-1"></i>Bangalore, Pune<br>
+                            <i class="fas fa-calendar me-1"></i>Drive Date: 5th April 2024
+                        </div>
+                    </div>
+                    <span class="status-badge status-upcoming">Upcoming</span>
+                </div>
+                <div class="package-badge">₹8 LPA - ₹15 LPA</div>
+                <div class="eligibility-badges">
+                    <span class="eligibility-badge">B.Tech CSE</span>
+                    <span class="eligibility-badge">B.Tech IT</span>
+                    <span class="eligibility-badge">B.Tech ECE</span>
+                    <span class="eligibility-badge">MCA</span>
+                </div>
+                <button class="register-btn" onclick="registerCompany('IBM')">
+                    <i class="fas fa-user-plus me-2"></i>Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container for Notifications -->
+<div class="toast-container" id="toastContainer"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Filter functionality
+    $(document).ready(function() {
+        $('.filter-btn').click(function() {
+            $('.filter-btn').removeClass('active');
+            $(this).addClass('active');
+            
+            const filter = $(this).data('filter');
+            
+            if (filter === 'all') {
+                $('.company-card').show();
+            } else {
+                $('.company-card').hide();
+                $(`.company-card[data-category="${filter}"]`).show();
+            }
+        });
+
+        // Add hover effects
+        $('.company-card').hover(
+            function() {
+                $(this).find('.company-logo').css('transform', 'scale(1.1)');
+            },
+            function() {
+                $(this).find('.company-logo').css('transform', 'scale(1)');
+            }
+        );
+    });
+
+    // Registration function with popup
+    function registerCompany(companyName) {
+        // Show success toast
+        showToast(`Successfully registered for ${companyName} placement drive!`, 'success');
+        
+        // Disable the button
+        event.target.disabled = true;
+        event.target.innerHTML = '<i class="fas fa-check me-2"></i>Registered';
+        event.target.classList.remove('register-btn');
+        event.target.classList.add('btn', 'btn-success');
+        
+        // Update statistics (you can connect this to backend)
+        updateRegistrationStats();
+    }
+
+    // Toast notification function
+    function showToast(message, type = 'success') {
+        const toastContainer = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'custom-toast';
+        
+        const icon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-info-circle';
+        const color = type === 'success' ? 'var(--success-color)' : 'var(--primary-color)';
+        
+        toast.innerHTML = `
+            <div class="d-flex align-items-center">
+                <i class="${icon} me-2" style="color: ${color}; font-size: 1.2rem;"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                toastContainer.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+
+    // Update registration statistics
+    function updateRegistrationStats() {
+        const registeredCount = document.querySelectorAll('.btn-success').length;
+        const totalCompanies = document.querySelectorAll('.company-card').length;
+        
+        // You can update the stats display here
+        console.log(`Registered for ${registeredCount} out of ${totalCompanies} companies`);
+    }
+
+    // Add slideOut animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+{% endblock %}

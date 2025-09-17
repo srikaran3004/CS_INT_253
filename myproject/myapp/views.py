@@ -8,6 +8,19 @@ def hello(request):
 def home1(request):
     return HttpResponse("<h1 style='color:red'> Welcome to home page!!</h1>");
 
+# Placement Portal Views
+def home(request):
+    """Home page for placement portal"""
+    return render(request, 'home.html')
+
+def profile(request):
+    """Student profile page"""
+    return render(request, 'profile.html')
+
+def placement_drives(request):
+    """Placement drives page"""
+    return render(request, 'placementdrive.html')
+
 def dish(request):
     dishes = ["Pizza", "Burger", "Pasta", "Sushi", "Tacos"]
     dish_list = "<ul>"
@@ -196,3 +209,57 @@ def recipe(request):
     else:
         return HttpResponse("<h1 style='color:red'>Food not found</h1>")
 
+
+def destinations(request):
+    places = {
+        'paris': {
+            'name': 'Paris',
+            'image': 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=400&q=80',
+        },
+        'newyork': {
+            'name': 'New York',
+            'image': 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
+        },
+        'tokyo': {
+            'name': 'Tokyo',
+            'image': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=400&q=80',
+        },
+        'sydney': {
+            'name': 'Sydney',
+            'image': 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
+        },
+    }
+    return render(request, 'destinations.html', {'places': places})
+
+def destination_detail(request, place):
+    images = {
+        'paris': [
+            'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1508051123996-69f8caf4891e?auto=format&fit=crop&w=400&q=80',
+        ],
+        'newyork': [
+            'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=400&q=80',
+        ],
+        'tokyo': [
+            'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1465101178521-c1a4c8a0f8f9?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
+        ],
+        'sydney': [
+            'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=400&q=80',
+        ],
+    }
+    place_key = place.lower()
+    if place_key in images:
+        return render(request, 'destination_detail.html', {
+            'place': place_key,
+            'images': images[place_key],
+            'name': place_key.capitalize()
+        })
+    else:
+        return HttpResponse('Destination not found', status=404)

@@ -11,6 +11,11 @@ urlpatterns = [
     path('form/', views.api_form, name='api_form'),
     path('addform/', views.add_form, name='add_form'),
     
+    # Placement Portal Routes
+    path('placement/', views.home, name='home'),
+    path('placement/profile/', views.profile, name='profile'),
+    path('placement/drives/', views.placement_drives, name='placement_drives'),
+    
     # Routes with route parameters (URL path parameters)
     path('dish/<str:item>/',views.menuDisplay,name='menuDetails'),  # Route parameter: item
     path('dishDetails/<str:item_name>/', views.menu, name='menu'),  # Route parameter: item_name
@@ -22,4 +27,8 @@ urlpatterns = [
     # Routes that expect query parameters
     path('recipe/',views.recipe,name='recipe'),  # Expects query parameter like ?food=pizza
     path('add/', views.add_numbers, name='add_numbers'),  # Likely expects query parameters
+
+    # Destinations Routes
+    path('destinations/', views.destinations, name='destinations'),
+    path('destinations/<str:place>/', views.destination_detail, name='destination_detail'),
 ]

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ name }} - Details</title>
+    <style>
+        .images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .images img {
+            width: 260px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .back {
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;">{{ name }} - Gallery</h1>
+    <a class="back" href="/destinations/">&#8592; Back to Destinations</a>
+    <div class="images">
+        {% for img in images %}
+            <img src="{{ img }}" alt="{{ name }} image">
+        {% endfor %}
+    </div>
+</body>
+</html>

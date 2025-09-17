@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Destinations</title>
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+        .place {
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .place img {
+            width: 200px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .place-name {
+            margin-top: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        a { text-decoration: none; color: inherit; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;">Popular Destinations</h1>
+    <div class="grid">
+        {% for key, place in places.items %}
+        <div class="place">
+            <a href="/destinations/{{ key }}/">
+                <img src="{{ place.image }}" alt="{{ place.name }}">
+                <div class="place-name">{{ place.name }}</div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

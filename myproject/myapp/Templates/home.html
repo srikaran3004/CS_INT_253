@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - LPU Placement Portal{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 4rem 2rem;
+        margin-bottom: 3rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .feature-description {
+        color: #6b7280;
+        line-height: 1.6;
+    }
+
+    .stats-section {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    .cta-section {
+        background: linear-gradient(135deg, var(--accent-color), #fbbf24);
+        color: white;
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .cta-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .cta-description {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <i class="fas fa-graduation-cap me-3"></i>
+            Welcome to LPU Placement Portal
+        </h1>
+        <p class="hero-subtitle">
+            Your gateway to successful career opportunities. Connect with top companies and build your future.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{% url 'profile' %}" class="btn btn-light btn-lg">
+                <i class="fas fa-user me-2"></i>View Profile
+            </a>
+            <a href="{% url 'placement_drives' %}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-building me-2"></i>Browse Companies
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="features-grid">
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-user-graduate"></i>
+        </div>
+        <h3 class="feature-title">Student Profile</h3>
+        <p class="feature-description">
+            Create and manage your comprehensive student profile with academic details, skills, and achievements.
+        </p>
+    </div>
+    
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-building"></i>
+        </div>
+        <h3 class="feature-title">Company Drives</h3>
+        <p class="feature-description">
+            Explore placement opportunities from top companies with detailed information about packages and eligibility.
+        </p>
+    </div>
+    
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <h3 class="feature-title">Track Progress</h3>
+        <p class="feature-description">
+            Monitor your placement journey with real-time statistics and progress tracking.
+        </p>
+    </div>
+</div>
+
+<!-- Statistics Section -->
+<div class="stats-section">
+    <h2 class="text-center mb-4" style="color: var(--primary-color);">
+        <i class="fas fa-chart-bar me-2"></i>Placement Statistics
+    </h2>
+    <div class="stats-grid">
+        <div class="stat-item">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Companies Visited</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">95%</div>
+            <div class="stat-label">Placement Rate</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">₹25L</div>
+            <div class="stat-label">Highest Package</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">15,000+</div>
+            <div class="stat-label">Students Placed</div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action Section -->
+<div class="cta-section">
+    <h2 class="cta-title">Ready to Start Your Career Journey?</h2>
+    <p class="cta-description">
+        Join thousands of successful LPU graduates who have secured their dream jobs through our placement portal.
+    </p>
+    <div class="cta-buttons">
+        <a href="{% url 'profile' %}" class="btn btn-light btn-lg">
+            <i class="fas fa-user me-2"></i>Complete Your Profile
+        </a>
+        <a href="{% url 'placement_drives' %}" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-search me-2"></i>Find Opportunities
+        </a>
+    </div>
+</div>
+{% endblock %}
